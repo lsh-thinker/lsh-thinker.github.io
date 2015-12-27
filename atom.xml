@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://lsh-thinker.github.io/atom.xml" rel="self"/>
+  <link href="http://lsh-thinker.github.io/"/>
+  <updated>2015-12-27T23:18:11+08:00</updated>
+  <id>http://lsh-thinker.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[程序员的思考]]></title>
+    <link href="http://lsh-thinker.github.io/blog/2015/12/27/cheng-xu-yuan-de-si-kao/"/>
+    <updated>2015-12-27T21:43:45+08:00</updated>
+    <id>http://lsh-thinker.github.io/blog/2015/12/27/cheng-xu-yuan-de-si-kao</id>
+    <content type="html"><![CDATA[<p>总想着程序员应该有自己的博客，可以慢慢积累自己学到的一些东西，很赞！</p>
+
+<p>能用vim来写博客，用git来版本控制，用markdown来控制格式。</p>
+
+<p>谢谢孝尼！</p>
+]]></content>
+  </entry>
+  
+</feed>

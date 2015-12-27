@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://lsh-thinker.github.io/sitemap.xml 
