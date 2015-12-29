@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Thinker's blog]]></title>
-  <link href="http://lsh-thinker.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Other | Thinker's blog]]></title>
+  <link href="http://lsh-thinker.github.io/blog/categories/other/atom.xml" rel="self"/>
   <link href="http://lsh-thinker.github.io/"/>
   <updated>2015-12-30T00:24:11+08:00</updated>
   <id>http://lsh-thinker.github.io/</id>
