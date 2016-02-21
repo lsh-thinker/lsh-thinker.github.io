@@ -9,8 +9,7 @@
   <meta name="author" content="hualong">
 
   
-  <meta name="description" content="一眨眼元旦假期三天就过去了，想想自己也快是步入职场一年的人了。2015年，我从以前熟悉的Java开发跳到了一个C++团队，而且是搞数据库的。虽说容器啊什么都有，跟Java写起来没啥太大的区别，不过还是有很多不习惯。
-例如以前Java不用管内存，现在要管，曾经有个bug，跑的结果时对时错， &hellip;">
+  <meta name="description" content="最近团队内部组织学习并发无锁队列的实现，而要学好这个，其中又有很多基础的概念，今天先谈谈什么是Memory Consistency和Cache Coherence。 我们都知道，目前大多数计算机的体系结构由一块共享内存（shared memory）和多个处理器（processor）组成。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +66,109 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/">什么是Memory Consistency和Cache Coherence?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-21T15:16:24+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>3:16 pm</span></time>
+        
+           | <a href="/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/#disqus_thread"
+             data-disqus-identifier="http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近团队内部组织学习并发无锁队列的实现，而要学好这个，其中又有很多基础的概念，今天先谈谈什么是<strong>Memory Consistency</strong>和<strong>Cache Coherence</strong>。</p>
+
+<p>我们都知道，目前大多数计算机的体系结构由一块共享内存（shared memory）和多个处理器（processor）组成。按照摩尔定律，每个处理器的处理能力每18个月就会翻一番，处理器越做越复杂，Intel要保持这个增长速度，在研发上需要投入巨大的成本，基本上已经快达到物理的极限。为了让处理器更好地发挥性能，我们跨入了多核时代，期望在最好的情况下，N个核就能达到原来单个核N倍的处理能力。但是，只要程序中存在多个线程同时操作（Store或Load）同一块共享内存，那么就需要一套机制来协调这些操作之间的先后顺序。而原来单个处理器中为优化性能而采用一系列设计，例如Cache，也变成更加复杂。</p>
+
+<h2>Memory Consistency</h2>
+
+<p>多个处理器同时操作同一块共享内存，这样的设计带来了性能上的提升，但是由于需要有一套机制来保证这些操作的正确性。
+先引用一处定义：</p>
+
+<blockquote><p>A memory consistency model, or, more simply, a memory model, is a specification of the allowed behavior of multithreaded programs executing with shared memory. For a multithreaded program executing with specific input data, it specifies what values dynamic loads may return and what the final state of memory is. Unlike a single-threaded execution, multiple correct behaviors are usually allowed.</p></blockquote>
+
+<p>简单的内存操作不外乎Store和Load（先不考虑原子操作），所以组合起来，便有四种可能</p>
+
+<ul>
+<li>Store-Load (eg. Store x = 1; Load r1 = y;)</li>
+<li>Load-Load (eg. Load r1 = x; Load r2 = y;)</li>
+<li>Store-Store (eg. Store x = 1; Store y = 2;)</li>
+<li>Load-Store (eg. Load r1 = x; Store y = 2;)</li>
+</ul>
+
+
+<p>程序中可能出现对某个变量x,y的read或write操作，就是Store（写入的内存）或者Load（从内存中读到寄存器中）。而当CPU收到这两条指令时，为了提升执行的性能，它是不一定严格按照程序中所指定的顺序来执行的。例如对于同一个处理器中Store-Store这种情况，Store x = 1; Store y = 2; 交换这两条指令的执行顺序是不影响最终的执行结果的，但是对于多个处理器呢？则可能导致程序出现意想不到的结果。那么Memory Consistency是什么，简而言之，就是规定了这些内存指令，在CPU执行的时候，能否对它们进行reorder。</p>
+
+<h3>Sequential Consistency</h3>
+
+<p>讲到这里，就自然而然引出了Sequential Consistency这种Memory Consistency的概念。同样先引用Lamport的定义：</p>
+
+<blockquote><p>Lamport first called a single processor (core) sequential if “the result of an execution is the same as if the operations had been executed in the order specified by the program.” He then called a multiprocessor sequentially consistent if “the result of any execution is the same as if the operations of all processors (cores) were executed in some sequential
+ order, and the operations of each individual processor (core) appear in this sequence in the order specified by its program.”</p></blockquote>
+
+<p>SC是最严格的内存模型,也被成为Strong Consistency Model，自然也会有其他的Weak Consistency Model。SC不允许单个CPU指令之间的reorder。
+我们定义&lt;p 表示program order（指令在程序中的先后关系）, &lt;m表示global memory order（指令最后在共享内存中的执行的先后顺序）。那么有：</p>
+
+<ul>
+<li>If L(a) &lt;p L(b) =&gt; L(a) &lt;m L(b) // Load -&gt; Load</li>
+<li>If L(a) &lt;p S(b) =&gt; L(a) &lt;m S(b) // Load -&gt; Store</li>
+<li>If S(a) &lt;p S(b) =&gt; S(a) &lt;m S(b) // Store -&gt; Store</li>
+<li>If S(a) &lt;p L(b) =&gt; S(a) &lt;m L(b) // Store -&gt; Load</li>
+</ul>
+
+
+<p>可以看到SC的定义非常直观，当程序指定了两条指令的执行顺序的时候，SC保证这两条指令落到内存中也是按照同样的顺序执行的。但是坏处就是处理器自身的受到了很大的限制，不能对不影响执行结果的指令进行reorder，从而提升CPU的性能。后面可以分析一些更为松散的memory consistency model，它们上面的规则做了一些放松，在性能和用户可编程性之间做了一些trade off。</p>
+
+<h2>Cache Coherence</h2>
+
+<blockquote><p>Coherence seeks to make the caches of a shared-memory system as functionally invisible as the caches in a single-core system</p></blockquote>
+
+<p>现代的处理器本身都带有cache。当处理器A，B从内存中加载x的值并缓存在cache之中，在下一个时刻，处理器A修改了x的值，但是此时处理器B的cache中的值还是原来的x，这就导致了cache incoherence。所以，多个处理器之间，需要通过Cache Coherence Protocal来保证下次读取到的x的值是相同的。</p>
+
+<p>那何为coherence，可以通过如下Coherence invariants来定义：</p>
+
+<ol>
+<li><p>Single-Writer, Multiple-Read (SWMR) Invariant. For any memory location A, at any given (logical) time, there exists only a single core that may write to A (and can also read it) or some number of cores that may only read A.</p></li>
+<li><p>Data-Value Invariant. The value of the memory location at the start of an epoch is the same as the value of the memory location at the end of its last read–write epoch.</p></li>
+</ol>
+
+
+<p>以上两点保证了多个处理器看到cache的一致性，也就是多个处理器中同时只有一个能够操作读写内存位置，但是同时可以有多个处理器读取同一个内存位置。实现cache coherence有很多种方式和协议，具体以后再详述。</p>
+
+<h2>Memory Consistency VS Cache Coherence</h2>
+
+<p>可以看到，Memory Consistency和Cache Coherence的关注点其实是不一样的。MC关注的是所有线程对所有的内存位置的Store和Load操作必须遵循某个规则，而CC关注的是所有线程对单一的内存位置的修改必须遵循某种规则。Cache coherece是为了让cache在多处理器系统中不需要考虑由于cache的存在而导致的不一致的问题。在没有cache coherence的情况下，仍然可以实现一个Memory Consistency。但是大部分的Memory Consistency Model会采用Cache Coherence来实现一个内存系统，通常可以将它当成是一个黑盒，而不需要关心它的具体实现。</p>
+
+<p>SC这种严格的模型给予了开发者很直观的概念，却为性能优化带来了很多限制。后面再继续聊聊以下几个问题：</p>
+
+<ul>
+<li>x86系统是实现了怎样的内存模型，和SC有何不同?</li>
+<li>我们可以通过什么指令来告诉CPU保证Store和Load的执行顺序?</li>
+<li>除了CPU会reorder以外，还有什么会导致指令执行顺序的改变？</li>
+<li>其它的Weak Consistency Model又是怎样？有没有什么应用场景?</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -225,6 +327,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/">什么是Memory Consistency和Cache Coherence?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/04/2016nian-de-ji-hua-yu-xi-wang/">2016年的计划与希望</a>
       </li>
     
@@ -237,7 +343,8 @@
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/other/'>other (2)</a></li>
+    <li class='category'><a href='/blog/categories/concurrency/'>concurrency (1)</a></li>
+<li class='category'><a href='/blog/categories/other/'>other (2)</a></li>
  
   </ul>
 </section>

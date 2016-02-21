@@ -1,24 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Thinker's blog]]></title>
-  <link href="http://lsh-thinker.github.io/atom.xml" rel="self"/>
-  <link href="http://lsh-thinker.github.io/"/>
-  <updated>2016-02-21T21:31:25+08:00</updated>
-  <id>http://lsh-thinker.github.io/</id>
-  <author>
-    <name><![CDATA[hualong]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>什么是Memory Consistency和Cache Coherence? - Thinker's blog</title>
+  <meta name="author" content="hualong">
 
   
-  <entry>
-    <title type="html"><![CDATA[什么是Memory Consistency和Cache Coherence?]]></title>
-    <link href="http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/"/>
-    <updated>2016-02-21T15:16:24+08:00</updated>
-    <id>http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence</id>
-    <content type="html"><![CDATA[<p>最近团队内部组织学习并发无锁队列的实现，而要学好这个，其中又有很多基础的概念，今天先谈谈什么是<strong>Memory Consistency</strong>和<strong>Cache Coherence</strong>。</p>
+  <meta name="description" content="最近团队内部组织学习并发无锁队列的实现，而要学好这个，其中又有很多基础的概念，今天先谈谈什么是Memory Consistency和Cache Coherence。 我们都知道，目前大多数计算机的体系结构由一块共享内存（shared memory）和多个处理器（processor）组成。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Thinker's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script type='text/javascript' src='http://ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js?ver=3.4.2'></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css" -->
+<!-- link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css" -->
+<link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Thinker's blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lsh-thinker.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">什么是Memory Consistency和Cache Coherence?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-21T15:16:24+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>3:16 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://lsh-thinker.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近团队内部组织学习并发无锁队列的实现，而要学好这个，其中又有很多基础的概念，今天先谈谈什么是<strong>Memory Consistency</strong>和<strong>Cache Coherence</strong>。</p>
 
 <p>我们都知道，目前大多数计算机的体系结构由一块共享内存（shared memory）和多个处理器（processor）组成。按照摩尔定律，每个处理器的处理能力每18个月就会翻一番，处理器越做越复杂，Intel要保持这个增长速度，在研发上需要投入巨大的成本，基本上已经快达到物理的极限。为了让处理器更好地发挥性能，我们跨入了多核时代，期望在最好的情况下，N个核就能达到原来单个核N倍的处理能力。但是，只要程序中存在多个线程同时操作（Store或Load）同一块共享内存，那么就需要一套机制来协调这些操作之间的先后顺序。而原来单个处理器中为优化性能而采用一系列设计，例如Cache，也变成更加复杂。</p>
 
@@ -90,105 +160,129 @@
 <li>其它的Weak Consistency Model又是怎样？有没有什么应用场景?</li>
 </ul>
 
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[2016年的计划与希望]]></title>
-    <link href="http://lsh-thinker.github.io/blog/2016/01/04/2016nian-de-ji-hua-yu-xi-wang/"/>
-    <updated>2016-01-04T22:55:08+08:00</updated>
-    <id>http://lsh-thinker.github.io/blog/2016/01/04/2016nian-de-ji-hua-yu-xi-wang</id>
-    <content type="html"><![CDATA[<p>一眨眼元旦假期三天就过去了，想想自己也快是步入职场一年的人了。2015年，我从以前熟悉的Java开发跳到了一个C++团队，而且是搞数据库的。虽说容器啊什么都有，跟Java写起来没啥太大的区别，不过还是有很多不习惯。
-例如以前Java不用管内存，现在要管，曾经有个bug，跑的结果时对时错，后来发现是那块string的内存空间回收了，如果被覆盖，那么结果就不对，如果结果没有被覆盖，结果就是对的。这个东西你一时半会还测不出来，要靠压测。第二个就是熟悉vim，以前都是用eclipse，当然现在用来查找代码也挺方便。第三个就是C++代码里很多的宏和模版，而Java是没有宏的，让我见识到了很多代码确实用宏写起来相当的风骚。团队里大牛太多，仍旧要好好学习。</p>
 
-<p>想想2016年要干的事情有好多:</p>
+<span class="byline author vcard">Posted by <span class="fn">hualong</span></span>
 
-<h4>技术</h4>
-
-<ul>
-<li>老本行还是技术，除了工作上，应该多看看内功方面的书</li>
-<li>多coding coding coding</li>
-<li>多逛逛技术论坛，多尝试，拓宽知识面</li>
-</ul>
+      
 
 
-<h4>运动</h4>
-
-<ul>
-<li>一周坚持两次运动，现在应该能打两次羽毛球吧</li>
-<li>多跑步，虽然我不喜欢跑步，但是发现大汗淋漓的感觉还是很赞。</li>
-<li>最近天冷，胖了，发现脑子转的也慢了，目标是要keep fit！</li>
-<li>可以尝试培养其它的运动，多学一些技能，例如台球？轮滑?</li>
-</ul>
 
 
-<h4>历史</h4>
+<time class='entry-date' datetime='2016-02-21T15:16:24+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>3:16 pm</span></time>
+      
 
-<ul>
-<li>一直认为程序员也要全面发展，我这人有点强迫症，要看还要挑经典的看。最近对台湾的历史和明朝，宋朝，日本的历史都比较感兴趣。希望新的一年能看的更多，并且写下一些感悟。</li>
-<li>2015年看过的小说有武侠的(《射雕英雄传》,《神雕侠侣》，《倚天屠龙记》), 历史的(《明朝那些事》，《德川家康》)，官场的（《沧浪之水》），冒险的（《藏地密码》）等等。</li>
-<li>电视剧有《走向共和》，有好几部台湾的电影《海角七号》，《赛德克巴莱》，印度的电影《偶滴神啊》印象比较深刻。</li>
-<li>喜欢在洗澡的时候听听《罗辑思维》，然后周末看看《晓说》和《锵锵三人行》，《一虎一席谈》等等。</li>
-</ul>
-
-
-<h4>音乐</h4>
-
-<ul>
-<li>音乐上除了喜欢听听粤语歌和一些老歌以外，基本没啥造诣。</li>
-<li>学了一段时间的吉他，然后又没坚持下来。口琴也好多年没有吹了，不过这个东西，简单的也能吹吹。</li>
-<li>最近很喜欢听日本的一些歌曲，好像也很好听，今年可以挖掘一下。</li>
-</ul>
-
-
-<h4>摄影</h4>
-
-<ul>
-<li>去年如愿以偿的买了个单反。然后拍的照片也挺多，技术上嘛，说有很大的改进也没有，但是偶尔能拍的几张不错的照片就挺开心的。</li>
-<li>希望新的一年，学好摄影，学点后期制作，学点PS更好。</li>
-</ul>
-
-
-<h4>厨艺</h4>
-
-<ul>
-<li>去年开始自己做饭，问老爸老妈，结合下厨房，做了好几样菜，最多还是煲汤，各种排骨汤，土豆牛肉，萝卜饭，清蒸鱼。</li>
-<li>新的一年，希望能做得好吃一点，回家展示给爸妈看，哈哈哈~</li>
-</ul>
-
-
-<h4>旅行</h4>
-
-<ul>
-<li>这个随缘，比较想去是台湾和日本。</li>
-<li>还要把杭州的景点走一遍，公园卡用起来。然后就是周边的城市，南京啊，乌镇啊（一直想着找个妹纸一起去，看来是很难了T_T）</li>
-</ul>
-
-
-<h4>习惯</h4>
-
-<ul>
-<li>要养成早睡早起的好习惯，晚上最好是12点睡觉，早上7点半起。</li>
-<li>做事情要快，不要选择困难，小的事情无所谓，大的事情可以慎重一点，其实有时结果影响并没有那么大</li>
-<li>做事情要狂热一点，从小到大，我都是属于不太会和人争东西的人，要唤醒自己的竞争意识。到社会中，很多东西都是要自己去争取的。</li>
-<li>多尝试，不要守着自己的熟悉的区域，要让自己感到每天都有进步</li>
-<li>要有危机感</li>
-</ul>
-
-]]></content>
-  </entry>
+<span class="categories">
   
-  <entry>
-    <title type="html"><![CDATA[程序员的思考]]></title>
-    <link href="http://lsh-thinker.github.io/blog/2015/12/27/cheng-xu-yuan-de-si-kao/"/>
-    <updated>2015-12-27T21:43:45+08:00</updated>
-    <id>http://lsh-thinker.github.io/blog/2015/12/27/cheng-xu-yuan-de-si-kao</id>
-    <content type="html"><![CDATA[<p>总想着程序员应该有自己的博客，可以慢慢积累自己学到的一些东西，很赞！</p>
-
-<p>能用vim来写博客，用git来版本控制，用markdown来控制格式。</p>
-
-<p>谢谢孝尼！</p>
-]]></content>
-  </entry>
+    <a class='category' href='/blog/categories/concurrency/'>concurrency</a>
   
-</feed>
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/01/04/2016nian-de-ji-hua-yu-xi-wang/" title="Previous Post: 2016年的计划与希望">&laquo; 2016年的计划与希望</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/">什么是Memory Consistency和Cache Coherence?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/04/2016nian-de-ji-hua-yu-xi-wang/">2016年的计划与希望</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/27/cheng-xu-yuan-de-si-kao/">程序员的思考</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/concurrency/'>concurrency (1)</a></li>
+<li class='category'><a href='/blog/categories/other/'>other (2)</a></li>
+ 
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - hualong -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'longshaohang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/';
+        var disqus_url = 'http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
