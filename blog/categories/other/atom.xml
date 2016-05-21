@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Other | Thinker's blog]]></title>
   <link href="http://lsh-thinker.github.io/blog/categories/other/atom.xml" rel="self"/>
   <link href="http://lsh-thinker.github.io/"/>
-  <updated>2016-02-21T21:31:25+08:00</updated>
+  <updated>2016-05-21T12:28:13+08:00</updated>
   <id>http://lsh-thinker.github.io/</id>
   <author>
     <name><![CDATA[hualong]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何免费搭建自己的博客]]></title>
+    <link href="http://lsh-thinker.github.io/blog/2016/05/21/ru-he-mian-fei-da-jian-zi-ji-de-bo-ke/"/>
+    <updated>2016-05-21T10:55:10+08:00</updated>
+    <id>http://lsh-thinker.github.io/blog/2016/05/21/ru-he-mian-fei-da-jian-zi-ji-de-bo-ke</id>
+    <content type="html"><![CDATA[<p>之前朋友介绍用octprocess来搭建自己的博客，本来想写篇详细的教程，看着网上都写的挺详细，这里就先记下参考的几篇不错的blog。</p>
+
+<p><a href="http://www.jianshu.com/p/0ac2ac1a8e45">octopress博客搭建和个性化配置</a></p>
+
+<p><a href="http://toughcoder.net/blog/2014/10/16/blogging-like-a-hacker-with-github-pages/">码农的救赎：使用Github Pages搭建博客</a></p>
+
+<p><a href="http://toughcoder.net/blog/2015/04/22/advanced-tricks-of-github-pages-with-octopress/">使用Octopress和Github Pages搭建博客的高级技巧</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2016年的计划与希望]]></title>

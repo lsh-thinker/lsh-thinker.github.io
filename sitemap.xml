@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://lsh-thinker.github.io/blog/2016/05/21/vimchang-yong-ming-ling-ji-lu/</loc>
+    <lastmod>2016-05-21T12:14:39+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lsh-thinker.github.io/blog/2016/05/21/tmuxchang-yong-ming-ling-ji-lu/</loc>
+    <lastmod>2016-05-21T12:14:24+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lsh-thinker.github.io/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu/</loc>
+    <lastmod>2016-05-21T11:24:19+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lsh-thinker.github.io/blog/2016/05/21/ru-he-mian-fei-da-jian-zi-ji-de-bo-ke/</loc>
+    <lastmod>2016-05-21T10:55:10+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://lsh-thinker.github.io/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/</loc>
     <lastmod>2016-02-21T15:16:24+08:00</lastmod>
   </url>
@@ -23,5 +39,8 @@
   </url>
   <url>
     <loc>http://lsh-thinker.github.io/blog/categories/concurrency/</loc>
+  </url>
+  <url>
+    <loc>http://lsh-thinker.github.io/blog/categories/tool/</loc>
   </url>
 </urlset>

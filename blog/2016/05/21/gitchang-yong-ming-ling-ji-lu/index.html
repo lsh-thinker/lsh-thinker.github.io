@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git常用命令记录 - Thinker's blog</title>
+  <meta name="author" content="hualong">
+
+  
+  <meta name="description" content="Git远程03：分支的upstream 工作区->暂存区->版本库 库 1
+2
+- git remote add origin git@&lt;server-name&gt;:&lt;path&gt;/&lt;repo-name.git&gt; 关联一个远程库
+- git remote show &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lsh-thinker.github.io/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Thinker's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script type='text/javascript' src='http://ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js?ver=3.4.2'></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css" -->
+<!-- link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css" -->
+<link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Thinker's blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lsh-thinker.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Git常用命令记录</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-21T11:24:19+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:24 am</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://lsh-thinker.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="https://higoge.github.io/2015/07/06/git-remote03/">Git远程03：分支的upstream</a></p>
+
+<blockquote><p>工作区->暂存区->版本库</p></blockquote>
+
+<h4><strong>库</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git remote add origin git@&lt;server-name&gt;:&lt;path&gt;/&lt;repo-name.git&gt; 关联一个远程库
+</span><span class='line'>- git remote show origin 显示</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h4><strong>分支</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git branch 查看分支
+</span><span class='line'>- git branch -a 查看远程分支
+</span><span class='line'>- git branch -v
+</span><span class='line'>- git branch -r
+</span><span class='line'>- git remote -v
+</span><span class='line'>- git remote add 
+</span><span class='line'>
+</span><span class='line'>- git branch &lt;branch_name&gt; 创建分支branch_name
+</span><span class='line'>- git branch -d &lt;branch_name&gt; 删除分支branch_name
+</span><span class='line'>- git branch -D &lt;branch_name&gt; 强制删除本地分支 
+</span><span class='line'>
+</span><span class='line'>- git branch --set-upstream master origin/next 指定master分支追踪origin/next分支(git 1.7)
+</span><span class='line'>- git branch -u upstream/foo bar 本地分支为bar，远程分支为upstream/foo(git 1.8)
+</span><span class='line'>- git branch --set-upstream-to=upstream/foo bar(git 1.8)
+</span><span class='line'>- git branch -u upstream/foo 设置远程分支为upstream/foo(git 1.8)
+</span><span class='line'>- git branch --set-upstream-to=upstream/foo (git 1.8)
+</span><span class='line'>- git branch --unset-upstream 取消当前分支的upstream 
+</span><span class='line'>- git branch --unset-upstream [分支名] 取消其它分支的upstream
+</span><span class='line'>
+</span><span class='line'>- git checkout &lt;branch_name&gt; 切换到分支branch_name
+</span><span class='line'>- git checkout -b &lt;branch_name&gt; 创建并切换到分支branch_name
+</span><span class='line'>- git checkout -b &lt;local_branch&gt; &lt;origin/remote_branch&gt; 创建本地分支，并和远程分支关联
+</span><span class='line'>
+</span><span class='line'>- git merge &lt;branch_name&gt; 将分支branch_name合并到当前分支
+</span><span class='line'>- git merge --no-ff &lt;branch_name&gt; 进行正常的合并，而不是将指针指向develop
+</span><span class='line'>- git rebase &lt;branch_name&gt; rebase分支xx到当前分支
+</span><span class='line'>
+</span><span class='line'>- git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;  取回远程主机某个分支的更新，再与本地的指定分支合并
+</span><span class='line'>- git pull origin next 如果远程分支是与当前分支合并，则冒号后面的部分可以省略
+</span><span class='line'>- git push -u origin master push的同时设置远程分支，推送master分支到远程origin仓库master分支，并且建立本地分支master的upstream为origin/master</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h4><strong>git diff</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git diff 比较工作区和暂存区的区别
+</span><span class='line'>- git diff origin/master master 本地和远程的区别
+</span><span class='line'>- git diff HEAD -- FILENAME 比较工作区和版本库中的区别
+</span><span class='line'>- git diff HEAD   显示工作区与版本库之间的区别
+</span><span class='line'>- git diff --cached 显示暂存区和版本库的区别
+</span><span class='line'>- git diff --stat 列出文件
+</span><span class='line'>- git diff -- &lt;filename&gt;    只对比给定的文件
+</span><span class='line'>- git diff &lt;commit-id1&gt; &lt;commit-id2&gt; 比较两个commit之间的差异</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h4>git log</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git log 查看提交的信息
+</span><span class='line'>- git log --pretty=oneline &lt;filename&gt;  每个commit的信息只显示一行
+</span><span class='line'>- git log -p &lt;filename&gt; 查看文件每次提交的内容
+</span><span class='line'>- git log -p &lt;commit-id&gt; 查看某次commit的内容
+</span><span class='line'>- git log --stat 
+</span><span class='line'>- git log --author='shaohang.lsh' 查询某个用户的提交</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h4><strong>git stash</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git stash 缓存工作区和暂存区的修改，并将其设置为最后一次提交
+</span><span class='line'>- git stash apply stash@{0} apply后stash的内容不删除
+</span><span class='line'>- git stash pop 恢复时将stash也删除
+</span><span class='line'>- git stash list 查看stash的列表
+</span><span class='line'>- git stash drop
+</span><span class='line'>- git stash show -p 显示第一个stash的内容
+</span><span class='line'>- git stash show stash@{1} -p 指定某个stash</span></code></pre></td></tr></table></div></figure>
+
+
+<p>git stash 复原的时候默认不复原 staged 文件，也就是说如果你运行过 add 命令，使用 git status 查看的话文件应当处于 staged 状态，但是如果你 stash 并复原再看，那个文件的状态又变回 unstaged 了。解决办法就是运行 git stash apply 命令时加上 –index 参数：git stash apply –index，这样就可以完全恢复到 stash 之前的状态。</p>
+
+<hr />
+
+<h4><strong>git checkout</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git checkout -- &lt;filename&gt; 将工作区的内容丢弃，用暂存区的内容替换工作区
+</span><span class='line'>- git reset HEAD &lt;filename&gt; 将工作区的内容丢弃，暂存区的内容变成工作区，丢弃暂存区的内容
+</span><span class='line'>- git reset --hard HEAD^ 回滚到HEAD的上一个commit， 丢弃工作区和暂存区的内容
+</span><span class='line'>- git reset --hard &lt;commit-id&gt; 取消merge，回滚到commit前
+</span><span class='line'>- git reset --hard &lt;commit-id&gt; 回滚到某个commit-id
+</span><span class='line'>- git reset --soft HEAD^ 把HEAD的commit回滚到暂存区</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h4><strong>其它</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- git blame 查看文件中的每一行最后修改的作者
+</span><span class='line'>- git commit -m "xxx" 将暂存区的代码提交到版本库
+</span><span class='line'>- git grep 用于搜索被git索引的文件
+</span><span class='line'>- git log 查看某次提交
+</span><span class='line'>- git reflog 找到操作的id
+</span><span class='line'>- git apply -R {patch} 回滚某个patch
+</span><span class='line'>- git rebase --onto master 把当前分支rebase到master上
+</span><span class='line'>- git mv -f readme.txt README.txt 修改文件名
+</span><span class='line'>- git ls-files 列出所有的文件
+</span><span class='line'>- git rm file：从staged区中移除文件，同时把文件从磁盘上删除
+</span><span class='line'>- git rm --cached file：从staged区中移除文件，但文件保留在磁盘上
+</span><span class='line'>- git cherry-pick &lt;commit-id&gt; 把commit-id的内容apply到当前分支上</span></code></pre></td></tr></table></div></figure>
+
+
+<p>git add 会将之前修改的添加到暂存区
+此时修改文件再git commit， 是不会将第二次修改的内容添加到版本库的，只会将第一次填写的内容进行提交
+第一次修改 -> git add -> 第二次修改 -> git commit
+第一次修改 -> git add -> 第二次修改 -> git add -> git commit 这样就能提交两次修改
+每次修改，如果不add到暂存区，那就不会加入到commit中。</p>
+
+<hr />
+
+<ul>
+<li>git 把两个commit合并</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>例如有三个commit， 时间上为t0 t1, t2, t3 
+</span><span class='line'>git log 显示的顺序为 t3 t2 t1 t0
+</span><span class='line'>此时我们保留t0 不变，并且将t1,t2,t3 合并成t1
+</span><span class='line'>git rebase -i t0 表示t0不变，修改t0以后的commit
+</span><span class='line'>此时按时间显示三个commit 
+</span><span class='line'>    pick t1
+</span><span class='line'>    pick t2
+</span><span class='line'>    pick t3
+</span><span class='line'>我们把t2, t3 合并到t1 里面去，改为
+</span><span class='line'>    pick t1 表示选择t1这个commit
+</span><span class='line'>    squash t2 表示把t2 合并到前面的commit里面去
+</span><span class='line'>    squash t3 表示把t3 合并到前面的commit里面去
+</span><span class='line'>保存退出
+</span><span class='line'>之后，git log可以看到只剩下 t0 t1</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">hualong</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-05-21T11:24:19+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:24 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tool/'>tool</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/05/21/ru-he-mian-fei-da-jian-zi-ji-de-bo-ke/" title="Previous Post: 如何免费搭建自己的博客">&laquo; 如何免费搭建自己的博客</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/05/21/tmuxchang-yong-ming-ling-ji-lu/" title="Next Post: tmux常用命令记录">tmux常用命令记录 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/21/vimchang-yong-ming-ling-ji-lu/">Vim常用命令记录</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/21/tmuxchang-yong-ming-ling-ji-lu/">Tmux常用命令记录</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu/">Git常用命令记录</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/21/ru-he-mian-fei-da-jian-zi-ji-de-bo-ke/">如何免费搭建自己的博客</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/21/shi-yao-shi-memory-consistencyhe-cache-coherence/">什么是Memory Consistency和Cache Coherence?</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/concurrency/'>concurrency (1)</a></li>
+<li class='category'><a href='/blog/categories/other/'>other (3)</a></li>
+<li class='category'><a href='/blog/categories/tool/'>tool (3)</a></li>
+ 
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - hualong -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'longshaohang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://lsh-thinker.github.io/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu/';
+        var disqus_url = 'http://lsh-thinker.github.io/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

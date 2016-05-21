@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tool | Thinker's blog]]></title>
+  <link href="http://lsh-thinker.github.io/blog/categories/tool/atom.xml" rel="self"/>
+  <link href="http://lsh-thinker.github.io/"/>
+  <updated>2016-05-21T12:28:13+08:00</updated>
+  <id>http://lsh-thinker.github.io/</id>
+  <author>
+    <name><![CDATA[hualong]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vim常用命令记录]]></title>
+    <link href="http://lsh-thinker.github.io/blog/2016/05/21/vimchang-yong-ming-ling-ji-lu/"/>
+    <updated>2016-05-21T12:14:39+08:00</updated>
+    <id>http://lsh-thinker.github.io/blog/2016/05/21/vimchang-yong-ming-ling-ji-lu</id>
+    <content type="html"><![CDATA[<h4><strong>单词大小写</strong></h4>
+
+<pre><code>- ~  光标下字符大小写转换
+- gUw 光标下单词大写 w是范围
+- guw 光标下单词小写 
+</code></pre>
+
+<hr />
+
+<h4><strong>分屏</strong></h4>
+
+<pre><code>- ctrl+w c 关闭当前标签页
+- ctrl+w v 将当前标签页垂直分屏
+- ctrl+w s 将当前标签页水平分屏
+- vsp file 垂直分屏打开文件
+- sp file 水平分屏打开文件
+- ctrl+w h/j/k/l 跳到左/下/上/右的屏
+- ctrl+w 切换屏幕
+- qa 退出并关闭所有的屏
+- vim -o &lt;filename1&gt; &lt;filename2&gt; 水平分屏打开两个文件
+- vim -O &lt;filename1&gt; &lt;filename2&gt; 垂直分屏打开两个文件
+</code></pre>
+
+<hr />
+
+<h4><strong>删除字符</strong></h4>
+
+<pre><code>- x 删除当前光标位置的字符
+- X 删除当前光标位置的前面一个字符
+- d$ 删除当前光标位置到行末，和D一样
+- dw 删除一个单词，包括空格
+- de和dw类似
+</code></pre>
+
+<hr />
+
+<h4><strong>跳转</strong></h4>
+
+<pre><code>- gg 光标跳到第一行
+- G 光标跳到最后一行
+- 0 光标跳到行头
+- $ 光标跳到行尾
+- hjkl 左/下/上/右
+- w 跳到下一个单词第一个字符
+- e 跳到单词的最后一个字符
+- b 跳到单词的第一个字符
+</code></pre>
+
+<hr />
+
+<h4><strong>替换</strong></h4>
+
+<pre><code>- 行末：$
+- 行首：^
+- 空格：\s
+- 行末空格：\s\+$
+- 行首空格：^\+\s
+
+- :%s/\s\+$// 删除这些每行后面多余的空格
+命令前面指明范围是 "%"，所以这会作用于整个文件。
+"substitute" 命令的匹配模式是"\s\+$"。表示行末（$）前的一个或者多个（\+）空格（\s）。
+替换命令的 "to" 部分是空的："//", 这样就会删除那些匹配的空白字符。
+
+- :%s/^/xxx 每行的行首都添加一个字符串
+- :%s/$/xxx 每行的行尾都添加一个字符串
+</code></pre>
+
+<hr />
+
+<h4><strong>命令</strong></h4>
+
+<pre><code>- :set ignorecase  或者:set ic 忽略大小写查找
+- :set noignorecase 或者:set noic 考虑大小写
+- /word_to_search\c  用\c忽略大小写进行搜索
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tmux常用命令记录]]></title>
+    <link href="http://lsh-thinker.github.io/blog/2016/05/21/tmuxchang-yong-ming-ling-ji-lu/"/>
+    <updated>2016-05-21T12:14:24+08:00</updated>
+    <id>http://lsh-thinker.github.io/blog/2016/05/21/tmuxchang-yong-ming-ling-ji-lu</id>
+    <content type="html"><![CDATA[<h3>参考文章</h3>
+
+<ul>
+<li><a href="http://blog.jobbole.com/87584/">Tmux 速成教程：技巧和调整</a></li>
+<li><a href="http://kumu-linux.github.io/blog/2013/08/06/tmux/">Linux下终端利器tmux</a></li>
+</ul>
+
+
+<hr />
+
+<h3><strong>Pannel</strong></h3>
+
+<pre><code>- ctrl-b % 将当前panel左右分屏
+- ctrl-b " 将当前panel上下分屏
+- ctrl-b x 关闭panel
+- ctrl-b o 在分屏中切换
+- ctrl-b 上下左右 切换到上下左右分隔窗口
+- ctrl-b c-方向键 调整分隔窗口大小
+- ctrl-b {／｝　交换panel
+</code></pre>
+
+<h3><strong>Window</strong></h3>
+
+<pre><code>- ctrl-b c 创建一个窗口
+- ctrl-b &amp; 关闭窗口
+- ctrl-b p 切换到上个窗口
+- ctrl-b n 切换到下一个窗口
+- ctrl-b l 切换前后窗口
+- ctrl-b ， 重命名当前窗口
+- ctrl-b f 在所有窗口中查找关键词
+- ctrl-b w 显示所有窗口，并切换
+</code></pre>
+
+<h3><strong>session</strong></h3>
+
+<pre><code>- ctrl-b s 在session间切换
+- ctrl-b d 退出并保存session
+- tmux -2 new -s &lt;new-session&gt; 创建一个新的session
+- tmux new -s &lt;new-session&gt; 启动一个新的session
+- tmux attach 接入已经启动的会话
+</code></pre>
+
+<h3>copy mode</h3>
+
+<pre><code>1. ctrl+b [ 进入复制模式
+2. 按 space 开始复制，移动光标选择复制区域
+3. 按 Enter 复制并退出copy-mode
+4. 将光标移动到指定位置，按 PREIFX ] 粘贴
+</code></pre>
+
+<h3>other</h3>
+
+<pre><code>- ctrl+b page-up 向上翻页 
+- ctrl+b page-dwon 向下翻页 按Enter退出
+- ctrl+b ? 弹出所有快捷键
+- ctrl+b space 横竖分屏切换
+- ctrl+b alt+1
+- ctrl+b alt+2
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git常用命令记录]]></title>
+    <link href="http://lsh-thinker.github.io/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu/"/>
+    <updated>2016-05-21T11:24:19+08:00</updated>
+    <id>http://lsh-thinker.github.io/blog/2016/05/21/gitchang-yong-ming-ling-ji-lu</id>
+    <content type="html"><![CDATA[<p><a href="https://higoge.github.io/2015/07/06/git-remote03/">Git远程03：分支的upstream</a></p>
+
+<blockquote><p>工作区->暂存区->版本库</p></blockquote>
+
+<h4><strong>库</strong></h4>
+
+<pre><code>- git remote add origin git@&lt;server-name&gt;:&lt;path&gt;/&lt;repo-name.git&gt; 关联一个远程库
+- git remote show origin 显示
+</code></pre>
+
+<hr />
+
+<h4><strong>分支</strong></h4>
+
+<pre><code>- git branch 查看分支
+- git branch -a 查看远程分支
+- git branch -v
+- git branch -r
+- git remote -v
+- git remote add 
+
+- git branch &lt;branch_name&gt; 创建分支branch_name
+- git branch -d &lt;branch_name&gt; 删除分支branch_name
+- git branch -D &lt;branch_name&gt; 强制删除本地分支 
+
+- git branch --set-upstream master origin/next 指定master分支追踪origin/next分支(git 1.7)
+- git branch -u upstream/foo bar 本地分支为bar，远程分支为upstream/foo(git 1.8)
+- git branch --set-upstream-to=upstream/foo bar(git 1.8)
+- git branch -u upstream/foo 设置远程分支为upstream/foo(git 1.8)
+- git branch --set-upstream-to=upstream/foo (git 1.8)
+- git branch --unset-upstream 取消当前分支的upstream 
+- git branch --unset-upstream [分支名] 取消其它分支的upstream
+
+- git checkout &lt;branch_name&gt; 切换到分支branch_name
+- git checkout -b &lt;branch_name&gt; 创建并切换到分支branch_name
+- git checkout -b &lt;local_branch&gt; &lt;origin/remote_branch&gt; 创建本地分支，并和远程分支关联
+
+- git merge &lt;branch_name&gt; 将分支branch_name合并到当前分支
+- git merge --no-ff &lt;branch_name&gt; 进行正常的合并，而不是将指针指向develop
+- git rebase &lt;branch_name&gt; rebase分支xx到当前分支
+
+- git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;  取回远程主机某个分支的更新，再与本地的指定分支合并
+- git pull origin next 如果远程分支是与当前分支合并，则冒号后面的部分可以省略
+- git push -u origin master push的同时设置远程分支，推送master分支到远程origin仓库master分支，并且建立本地分支master的upstream为origin/master
+</code></pre>
+
+<hr />
+
+<h4><strong>git diff</strong></h4>
+
+<pre><code>- git diff 比较工作区和暂存区的区别
+- git diff origin/master master 本地和远程的区别
+- git diff HEAD -- FILENAME 比较工作区和版本库中的区别
+- git diff HEAD   显示工作区与版本库之间的区别
+- git diff --cached 显示暂存区和版本库的区别
+- git diff --stat 列出文件
+- git diff -- &lt;filename&gt;    只对比给定的文件
+- git diff &lt;commit-id1&gt; &lt;commit-id2&gt; 比较两个commit之间的差异
+</code></pre>
+
+<hr />
+
+<h4>git log</h4>
+
+<pre><code>- git log 查看提交的信息
+- git log --pretty=oneline &lt;filename&gt;  每个commit的信息只显示一行
+- git log -p &lt;filename&gt; 查看文件每次提交的内容
+- git log -p &lt;commit-id&gt; 查看某次commit的内容
+- git log --stat 
+- git log --author='shaohang.lsh' 查询某个用户的提交
+</code></pre>
+
+<hr />
+
+<h4><strong>git stash</strong></h4>
+
+<pre><code>- git stash 缓存工作区和暂存区的修改，并将其设置为最后一次提交
+- git stash apply stash@{0} apply后stash的内容不删除
+- git stash pop 恢复时将stash也删除
+- git stash list 查看stash的列表
+- git stash drop
+- git stash show -p 显示第一个stash的内容
+- git stash show stash@{1} -p 指定某个stash
+</code></pre>
+
+<p>git stash 复原的时候默认不复原 staged 文件，也就是说如果你运行过 add 命令，使用 git status 查看的话文件应当处于 staged 状态，但是如果你 stash 并复原再看，那个文件的状态又变回 unstaged 了。解决办法就是运行 git stash apply 命令时加上 –index 参数：git stash apply –index，这样就可以完全恢复到 stash 之前的状态。</p>
+
+<hr />
+
+<h4><strong>git checkout</strong></h4>
+
+<pre><code>- git checkout -- &lt;filename&gt; 将工作区的内容丢弃，用暂存区的内容替换工作区
+- git reset HEAD &lt;filename&gt; 将工作区的内容丢弃，暂存区的内容变成工作区，丢弃暂存区的内容
+- git reset --hard HEAD^ 回滚到HEAD的上一个commit， 丢弃工作区和暂存区的内容
+- git reset --hard &lt;commit-id&gt; 取消merge，回滚到commit前
+- git reset --hard &lt;commit-id&gt; 回滚到某个commit-id
+- git reset --soft HEAD^ 把HEAD的commit回滚到暂存区
+</code></pre>
+
+<hr />
+
+<h4><strong>其它</strong></h4>
+
+<pre><code>- git blame 查看文件中的每一行最后修改的作者
+- git commit -m "xxx" 将暂存区的代码提交到版本库
+- git grep 用于搜索被git索引的文件
+- git log 查看某次提交
+- git reflog 找到操作的id
+- git apply -R {patch} 回滚某个patch
+- git rebase --onto master 把当前分支rebase到master上
+- git mv -f readme.txt README.txt 修改文件名
+- git ls-files 列出所有的文件
+- git rm file：从staged区中移除文件，同时把文件从磁盘上删除
+- git rm --cached file：从staged区中移除文件，但文件保留在磁盘上
+- git cherry-pick &lt;commit-id&gt; 把commit-id的内容apply到当前分支上
+</code></pre>
+
+<p>git add 会将之前修改的添加到暂存区
+此时修改文件再git commit， 是不会将第二次修改的内容添加到版本库的，只会将第一次填写的内容进行提交
+第一次修改 -> git add -> 第二次修改 -> git commit
+第一次修改 -> git add -> 第二次修改 -> git add -> git commit 这样就能提交两次修改
+每次修改，如果不add到暂存区，那就不会加入到commit中。</p>
+
+<hr />
+
+<ul>
+<li>git 把两个commit合并
+<code>
+例如有三个commit， 时间上为t0 t1, t2, t3
+git log 显示的顺序为 t3 t2 t1 t0
+此时我们保留t0 不变，并且将t1,t2,t3 合并成t1
+git rebase -i t0 表示t0不变，修改t0以后的commit
+此时按时间显示三个commit
+  pick t1
+  pick t2
+  pick t3
+我们把t2, t3 合并到t1 里面去，改为
+  pick t1 表示选择t1这个commit
+  squash t2 表示把t2 合并到前面的commit里面去
+  squash t3 表示把t3 合并到前面的commit里面去
+保存退出
+之后，git log可以看到只剩下 t0 t1
+</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
